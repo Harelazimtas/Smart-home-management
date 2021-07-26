@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Smart-home-management</string>
+    <string name="title_add_mission">Add Mission</string>
+    <string name="field_name_mission">Name</string>
+    <string name="field_description_mission">Description</string>
+    <string name="field_assign_mission">Assign</string>
+    <string name="field_due_date_mission">Due Date</string>
+    <string name="button_field_submit">Submit</string>
 </resources>
