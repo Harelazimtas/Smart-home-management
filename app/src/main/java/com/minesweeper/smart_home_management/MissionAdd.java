@@ -7,17 +7,26 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
+
+import com.minesweeper.smart_home_management.model.Mission;
+
+import java.util.Date;
 
 public class MissionAdd extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private Spinner spinner;
+    private Mission mission;
     //data for dropdown
     private static final String[] paths = {"item 1", "item 2", "item 3"};
+    private static final int[] ids={1,2,3};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mission_add2);
+
+        mission=new Mission();
 
         //spinner-dropdown
         spinner = (Spinner)findViewById(R.id.field_assign_mission);
@@ -28,11 +37,22 @@ public class MissionAdd extends AppCompatActivity implements AdapterView.OnItemS
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
 
+        //text field
+        EditText editName = (EditText) findViewById(R.id.field_name_mission_edit);
+        EditText editDescription = (EditText) findViewById(R.id.field_description_mission);
+        EditText editDueDate = (EditText) findViewById(R.id.field_due_date_mission);
+
+
+
+
         // button submit
         final Button button = findViewById(R.id.button_field_submit);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Code here executes on main thread after user presses button
+                mission.setName(String.valueOf(editName.getText()));
+                mission.setDescription(String.valueOf(editDescription.getText()));
+                mission.setDueDate(new Date(String.valueOf(editDueDate.getText())));
+                System.out.println("mission111 "+mission);
             }
         });
     }
@@ -40,18 +60,7 @@ public class MissionAdd extends AppCompatActivity implements AdapterView.OnItemS
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        switch (position) {
-            case 0:
-                // Whatever you want to happen when the first item gets selected
-                break;
-            case 1:
-                // Whatever you want to happen when the second item gets selected
-                break;
-            case 2:
-                // Whatever you want to happen when the thrid item gets selected
-                break;
-
-        }
+        mission.setId(ids[position]);
     }
 
     @Override
@@ -59,19 +68,3 @@ public class MissionAdd extends AppCompatActivity implements AdapterView.OnItemS
         // TODO Auto-generated method stub
     }
 }
-
-/*
-<EditText
-        android:id="@+id/field_assign_mission"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="260dp"
-        android:ems="10"
-        android:inputType="text"
-        android:hint="@string/field_assign_mission"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.447"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:importantForAutofill="no" />
-*/
