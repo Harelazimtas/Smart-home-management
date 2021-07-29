@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "890546190966",
+    "project_id": "smart-home-management-5452f",
+    "storage_bucket": "smart-home-management-5452f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:890546190966:android:ef2ca2221d19e18a0b3d57",
+        "android_client_info": {
+          "package_name": "com.minesweeper.smart_home_management"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "890546190966-mcrvvgv8fqqloitvpku93k6qqoqljj8l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAP4CRdp3mnngx0OIdZRiKyOZmleQSQXjs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "890546190966-mcrvvgv8fqqloitvpku93k6qqoqljj8l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
