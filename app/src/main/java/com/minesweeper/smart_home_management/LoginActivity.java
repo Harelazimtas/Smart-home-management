@@ -44,11 +44,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     Toast.makeText(getApplicationContext(),"Invalid", Toast.LENGTH_LONG).show();
                 }
-
-
             }
-
-
         });
 
         signup_btn.setOnClickListener(new View.OnClickListener(){
@@ -103,6 +99,7 @@ public class LoginActivity extends AppCompatActivity {
                 {
 
                     String userNameFromDB = snapshot.child(userName).child("phoneNumber").getValue(String.class);
+
                     if(userNameFromDB.equals(userName))
                     {
                         String nameFromDB = snapshot.child(userName).child("name").getValue(String.class);

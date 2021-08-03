@@ -5,7 +5,7 @@ import java.util.Date;
 public class Mission {
     private String name;
     private String description;
-    private int id;
+    private int idPerson;
     private Date dueDate;
     private Status status;
 
@@ -13,18 +13,18 @@ public class Mission {
 
     }
 
-    public Mission(String name,String description,int id,Date dueDate){
+    public Mission(String name,String description,int idPerson,Date dueDate){
         this.name=name;
         this.description=description;
-        this.id=id;
+        this.idPerson=idPerson;
         this.dueDate=dueDate;
         this.status= Status.NEW;
     }
 
-    public Mission(String name,String description,int id,Date dueDate,Status status){
+    public Mission(String name,String description,int idPerson,Date dueDate,Status status){
         this.name=name;
         this.description=description;
-        this.id=id;
+        this.idPerson=idPerson;
         this.dueDate=dueDate;
         this.status= status;
     }
@@ -34,8 +34,8 @@ public class Mission {
         return dueDate;
     }
 
-    public int getId() {
-        return id;
+    public int getIdPerson() {
+        return idPerson;
     }
 
     public Status getStatus() {
@@ -54,8 +54,8 @@ public class Mission {
         this.description = description;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdPerson(int idPerson) {
+        this.idPerson = idPerson;
     }
 
     public void setDueDate(Date dueDate) {
@@ -75,7 +75,7 @@ public class Mission {
         return "Mission{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", id=" + id +
+                ", idPerson=" + idPerson +
                 ", dueDate=" + dueDate +
                 ", status=" + status +
                 '}';
