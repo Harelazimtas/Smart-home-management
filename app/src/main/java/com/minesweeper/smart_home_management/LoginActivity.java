@@ -104,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
                     {
                         String nameFromDB = snapshot.child(userName).child("name").getValue(String.class);
 
-                        Intent intent = new Intent(getApplicationContext(), TestActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), NavActivity.class);
                        intent.putExtra("name", nameFromDB);
                         startActivity(intent);
                         return;
