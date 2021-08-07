@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.minesweeper.smart_home_management">
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,7 +11,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Smarthomemanagement">
-        <activity android:name=".MissionAdd"></activity>
+        <activity android:name=".NavActivity"></activity>
+
+        <service android:name=".alarm.AlarmService" />
+
+        <receiver
+            android:name=".alarm.Alarm"
+            android:process=":remote" />
+
+        <activity android:name=".MissionAdd" />
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,6 +27,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".MainActivity">
         </activity>
         <activity android:name=".SignupActivity">
@@ -27,6 +38,7 @@
         </activity>
         <activity android:name=".CreateNewGroupActivity">
         </activity>
+
     </application>
 
 </manifest>
