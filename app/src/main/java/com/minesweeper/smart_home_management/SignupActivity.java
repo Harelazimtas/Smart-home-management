@@ -4,15 +4,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import objects.Person;
+import com.minesweeper.smart_home_management.model.Person;
 
 public class SignupActivity extends AppCompatActivity {
     private EditText firstName;
@@ -46,7 +44,8 @@ public class SignupActivity extends AppCompatActivity {
                 person = new Person(name,  phone_Number);
 
                 root.child(person.getPhoneNumber()).setValue(person);
-                Toast.makeText(getApplicationContext(), "Test", Toast.LENGTH_LONG).show();
+
+
             }
         });
 
