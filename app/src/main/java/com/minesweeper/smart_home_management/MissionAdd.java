@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.common.util.ArrayUtils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.minesweeper.smart_home_management.alarm.AlarmService;
 import com.minesweeper.smart_home_management.model.Mission;
 import com.minesweeper.smart_home_management.model.Status;
+import com.minesweeper.smart_home_management.utils.FinalString;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -37,13 +40,10 @@ public class MissionAdd extends AppCompatActivity{
     private DatabaseReference userDB = db.getReference("subscribers");
     private DatabaseReference missionDB = db.getReference("mission");
 
-    private AlarmService alarmService=new AlarmService();
-
     //field editText-date
     private EditText editDueDate;
     private int day,month,year;
     private final Calendar mcalendar=Calendar.getInstance();
-
 
     //data for dropdown
     private   List<String> userName=new ArrayList();
@@ -55,9 +55,13 @@ public class MissionAdd extends AppCompatActivity{
         setContentView(R.layout.activity_mission_add);
         mission=new Mission();
 
-
         //add user name to list by group id and init id of user for dropdown
-        String groupId="111";
+        SharedPreferences prefs = getSharedPreferences(getString(R.string.preference_file_key), MODE_MULTI_PROCESS);
+        String users= prefs.getString(FinalString.USERS, "null");
+        String[] usersId= users.split("#");
+
+        String groupId= prefs.getString(FinalString.GROUP_ID, "null");
+
         ArrayAdapter<String> adapter =new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item,userName);
         ValueEventListener eventListener = new ValueEventListener() {
@@ -66,10 +70,16 @@ public class MissionAdd extends AppCompatActivity{
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
                     String name = ds.child("name").getValue(String.class);
                     String id = ds.child("phoneNumber").getValue(String.class);
-                    if(groupId.equals(id)){
+                    String status= ds.child("status").getValue(String.class);
+                    // user in the group
+                    if(!status.equals("NONE") && ArrayUtils.contains( usersId, id )){
                         userName.add(name);
                         ids.add(id);
-                        Log.i("user of group",id+ " and name "+name);
+                    }
+                    //admin
+                    if(id.equals(groupId) ){
+                        userName.add(name);
+                        ids.add(id);
                     }
                 }
                 //refresh the drop down
@@ -114,7 +124,7 @@ public class MissionAdd extends AppCompatActivity{
                     return;
                 }
                 try {
-                    mission.setDueDate(new Date(String.valueOf(editDueDate.getText())));
+                    mission.setDueDate(String.valueOf(editDueDate.getText()));
                     mission.setStatus(Status.NEW);
                 }
                 catch (Exception e){
@@ -145,13 +155,6 @@ public class MissionAdd extends AppCompatActivity{
 
     }
 
-    @Override
-    public  void onStart() {
-        super.onStart();
-        //service alarm need to be after login
-        Intent serviceIntent = new Intent(this, AlarmService.class);
-        startService(serviceIntent);
-    }
 
     View.OnClickListener mClickListener=new View.OnClickListener() {
         @Override
@@ -164,11 +167,13 @@ public class MissionAdd extends AppCompatActivity{
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
             {
-                editDueDate.setText(dayOfMonth + "/" + monthOfYear + "/" + year);
+                editDueDate.setText(dayOfMonth + "/" + (monthOfYear+1) + "/" + year);
             }};
         DatePickerDialog dpDialog=new DatePickerDialog(this, listener, year, month, day);
         dpDialog.show();
     }
+
+
 
 
 }

@@ -1,6 +1,8 @@
 package com.minesweeper.smart_home_management;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,12 +20,18 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.minesweeper.smart_home_management.model.Group;
+
 import com.minesweeper.smart_home_management.model.Person;
+import com.minesweeper.smart_home_management.utils.FinalString;
+
+import java.util.Date;
+import java.util.concurrent.CountDownLatch;
 
 public class LoginActivity extends AppCompatActivity {
     private Button signup_btn;
     private Button login_btn;
     private EditText login_txt;
+
     private String userPhoneNumber = "";
     private String nameFromDB;
     private String adminPhone;
@@ -91,22 +99,13 @@ public class LoginActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists())
                 {
-
                     String userNameFromDB = snapshot.child(userName).child("phoneNumber").getValue(String.class);
 
                     if(userNameFromDB.equals(userName))
                     {
-
-
                              nameFromDB = snapshot.child(userName).child("name").getValue(String.class);
-                                 return;
-
-
+                             return;
                     }
-
-
-
-
                 }
                 login_txt.setError("No user was found");
                 login_txt.requestFocus();
@@ -114,14 +113,9 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
-
-
     }
-
-
 
     private void whatIsUserMemberStatus()
     {
@@ -146,14 +140,16 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d("check", "CreatingNewGroupActivity");
                             break;
                         case "ADMIN":
-                            Intent intentAdmin = new Intent(getApplicationContext(), TestActivity.class);
+                            Intent intentAdmin = new Intent(getApplicationContext(), NavActivity.class);
                             intentAdmin.putExtra("phoneNumber",typedPhone());
+                            commitUserToPref();
                             startActivity(intentAdmin);
                             Toast.makeText(getApplicationContext(), "Admin", Toast.LENGTH_LONG).show();
                             break;
                         case "MEMBER":
-                            Intent intentMember = new Intent(getApplicationContext(), TestActivity.class);
+                            Intent intentMember = new Intent(getApplicationContext(), NavActivity.class);
                             intentMember.putExtra("phoneNumber",typedPhone());
+                            commitUserToPref();
                             startActivity(intentMember);
                             Toast.makeText(getApplicationContext(), "Member", Toast.LENGTH_LONG).show();
                             break;
@@ -188,7 +184,12 @@ public class LoginActivity extends AppCompatActivity {
         return phoneFromUser;
     }
 
-
+    private void commitUserToPref() {
+        SharedPreferences prefs = getSharedPreferences(getString(R.string.preference_file_key), MODE_MULTI_PROCESS);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(FinalString.USER_ID, login_txt.getText().toString());
+        editor.commit();
+    }
 
 
 }
