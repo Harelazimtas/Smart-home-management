@@ -146,23 +146,23 @@ public class NavActivity extends AppCompatActivity {
                 for(DataSnapshot ds : missions.getChildren()) {
                     Mission mission=ds.getValue(Mission.class);
                     String dateMission=mission.getDueDate();
+                    String[] splitDate= dateMission.split("/");
+                    String dateConvert= splitDate[1]+"/"+splitDate[0]+"/"+splitDate[2];
                     if(lastDate ==""){
-                        lastDate =dateMission;
+                        lastDate =dateConvert;
                         nameNextMission=mission.getName();
                     }
-                    else if(new Date(lastDate).after(new Date(dateMission))){
-                        lastDate=dateMission;
+                    else if(new Date(lastDate).after(new Date(dateConvert))){
+                        lastDate=dateConvert;
                         nameNextMission=mission.getName();
                     }
                 }
+                Date dateTomrrowGet=new Date();
+                int day=dateTomrrowGet.getDay()+9;
+                int month = dateTomrrowGet.getMonth()+1;
+                String tommrowDate= month+ "/"+day+"/"+2021;
 
-                String[] dateString=lastDate.split("/");
-                System.out.println("dateString "+dateString);
-                dateString[0]=(Integer.parseInt(dateString[0])+1)+"/";
-                String tommrowDate= dateString[0]+ "/"+dateString[1]+"/"+dateString[2];
-                System.out.println("before one day "+new Date(tommrowDate)+" "+new Date(tommrowDate).after(new Date(lastDate)));
-
-                if(new Date(tommrowDate).after(new Date(lastDate))){
+                if(lastDate != ""&&new Date(tommrowDate).after(new Date(lastDate))){
                     //service alarm need to be after login
                     serviceIntent.putExtra("userID", userId);
                     System.out.println("nameNextMission "+ nameNextMission);
