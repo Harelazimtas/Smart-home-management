@@ -24,10 +24,8 @@ public class LoginActivity extends AppCompatActivity {
     private Button signup_btn;
     private Button login_btn;
     private EditText login_txt;
-    private String userPhoneNumber = "";
     private String nameFromDB;
-    private String adminPhone;
-    private  Group group;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,22 +138,17 @@ public class LoginActivity extends AppCompatActivity {
                     switch(status)
                     {
                         case "NONE":
+                        case "REQUEST_SENT":
                             Intent intent = new Intent(getApplicationContext(), NoneUserAfterLoginActivity.class);
                             intent.putExtra("phoneNumber",typedPhone());
                             startActivity(intent);
                             Log.d("check", "CreatingNewGroupActivity");
                             break;
                         case "ADMIN":
-                            Intent intentAdmin = new Intent(getApplicationContext(), TestActivity.class);
-                            intentAdmin.putExtra("phoneNumber",typedPhone());
-                            startActivity(intentAdmin);
-                            Toast.makeText(getApplicationContext(), "Admin", Toast.LENGTH_LONG).show();
-                            break;
                         case "MEMBER":
-                            Intent intentMember = new Intent(getApplicationContext(), TestActivity.class);
+                            Intent intentMember = new Intent(getApplicationContext(), NavActivity.class);
                             intentMember.putExtra("phoneNumber",typedPhone());
                             startActivity(intentMember);
-                            Toast.makeText(getApplicationContext(), "Member", Toast.LENGTH_LONG).show();
                             break;
 
                     }
