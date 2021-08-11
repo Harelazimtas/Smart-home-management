@@ -91,6 +91,11 @@ public class editMisssionActivity extends AppCompatActivity {
 
         // spinner mission
         spinnertStatus=(Spinner)findViewById(R.id.field_status_mission);
+        ArrayAdapter<Status> adapterStatus =new ArrayAdapter<Status>(this,
+                android.R.layout.simple_list_item_1,statusList);
+
+        adapterStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnertStatus.setAdapter(adapterStatus);
 
         // spinner mission
         spinnertStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -102,11 +107,7 @@ public class editMisssionActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView <?> parent) {
             }
         });
-        ArrayAdapter<Status> adapterStatus =new ArrayAdapter<Status>(this,
-                android.R.layout.simple_list_item_1,statusList);
 
-        adapterStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnertStatus.setAdapter(adapterStatus);
 
 
         // button submit validate field
@@ -138,9 +139,14 @@ public class editMisssionActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"Invalid Date", Toast.LENGTH_LONG).show();
 
                 }
+                //remove mission if the name change or if the mission finish
+                System.out.println("mission1 "+mission);
                 if(!currentNameMission.equals(mission.getName())){
                     missionDB.child(mission.getIdPerson()+"").child(currentNameMission).removeValue();
-
+                }
+                if(mission.getStatus().equals(Status.FINISH)){
+                    missionDB.child(mission.getIdPerson()+"").child(currentNameMission).removeValue();
+                    return;
                 }
                 // update mission to db IdPerson/name_mission/mission
                 missionDB.child(mission.getIdPerson()+"").child(mission.getName()).setValue(mission);
