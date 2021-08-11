@@ -40,7 +40,10 @@
         </activity>
         <activity android:name=".CreateNewGroupActivity">
         </activity>
-
+        <activity android:name=".RequestApproveActivity">
+        </activity>
     </application>
 
 </manifest>
+
+

@@ -29,6 +29,7 @@ public class NoneUserAfterLoginActivity extends AppCompatActivity {
         loggedInUser.setText(LoggedInUserFromDB);
 
         createGroup = (Button) findViewById(R.id.new_group_btn);
+        approvereq = (Button) findViewById(R.id.approve_req_btn);
         createGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -41,7 +42,15 @@ public class NoneUserAfterLoginActivity extends AppCompatActivity {
             }
         });
 
-
+        approvereq.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoggedUser = intent.getStringExtra("phoneNumber");
+                Intent intentsec = new Intent(getApplicationContext(), RequestApproveActivity.class);
+                intentsec.putExtra("phoneNumber", LoggedUser);
+                startActivity(intentsec);
+            }
+        });
 
     }
 

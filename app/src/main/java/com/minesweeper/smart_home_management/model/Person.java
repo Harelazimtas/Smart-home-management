@@ -5,16 +5,15 @@ public class Person {
     {
         NONE,
         ADMIN,
+        REQUEST_SENT,
         MEMBER
     }
-  // private String pid = "";
     private  GROUP_STATUS status = GROUP_STATUS.NONE;
     private String name = "";
     private String phoneNumber = "";
 
 
     public Person(String name, String phoneNumber) {
-        //this.pid = pid;
         this.name = name;
         this.phoneNumber = phoneNumber;
     }
@@ -23,13 +22,7 @@ public class Person {
 
     }
 
- //   public String getPid() {
-  //      return pid;
-   // }
 
-    //public void setPid(String pid) {
-     //   this.pid = pid;
-   // }
 
     public GROUP_STATUS getStatus() {
         return status;
