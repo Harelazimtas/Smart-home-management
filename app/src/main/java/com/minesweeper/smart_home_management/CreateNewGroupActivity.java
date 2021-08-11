@@ -121,8 +121,6 @@ public class CreateNewGroupActivity extends AppCompatActivity {
 
     private void getGroupFromDB(String phoneFromUser)
     {
-
-
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("group");
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

@@ -72,7 +72,7 @@ public class MissionAdd extends AppCompatActivity{
                     String id = ds.child("phoneNumber").getValue(String.class);
                     String status= ds.child("status").getValue(String.class);
                     // user in the group
-                    if(!status.equals("NONE") && ArrayUtils.contains( usersId, id )){
+                    if(!status.equals("NONE")&&status.equals("REQUEST_SENT") && ArrayUtils.contains( usersId, id )){
                         userName.add(name);
                         ids.add(id);
                     }
@@ -145,7 +145,6 @@ public class MissionAdd extends AppCompatActivity{
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.i("selected: ", String.valueOf(position));
                 mission.setIdPerson(Integer.parseInt(ids.get(position)));
             }
             @Override
