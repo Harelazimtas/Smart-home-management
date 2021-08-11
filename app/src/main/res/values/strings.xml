@@ -1,15 +1,28 @@
 <resources>
     <string name="app_name">Smart-home-management</string>
+    <!--Add mission-->
     <string name="title_add_mission">Add Mission</string>
     <string name="field_name_mission">Name</string>
     <string name="field_description_mission">Description</string>
     <string name="field_assign_mission">Assign</string>
     <string name="field_due_date_mission">Due Date</string>
     <string name="button_field_submit">Submit</string>
+    <!--edit mission-->
+    <string name="title_edit_mission">Edit Mission</string>
+    <string name="mission_message">Please select mission name to edit mission</string>
+    <string name="edit_name_mission">Name</string>
+    <string name="edit_description_mission">Description</string>
+    <string name="edit_assign_mission">Assign</string>
+    <string name="edit_due_date_mission">Due Date</string>
+    <string name="field_status_mission">Status</string>
+    <string name="button_edit_submit">Submit</string>
+
+
+    <!--nav bar-->
     <string name="button_nav_my_mission">My Mission</string>
     <string name="button_nav_add_mission">Add Mission</string>
     <string name="button_nav_all_mission">All Mission</string>
     <string name="button_nav_edit_mission">edit Mission</string>
     <string name="button_nav_add_people">Add People</string>
-    <string name="preference_file_key"/>
+    <string name="preference_file_key" />
 </resources>

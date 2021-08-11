@@ -3,10 +3,8 @@ package com.minesweeper.smart_home_management;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,22 +20,18 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.minesweeper.smart_home_management.alarm.AlarmService;
 import com.minesweeper.smart_home_management.model.Mission;
 import com.minesweeper.smart_home_management.model.Status;
 import com.minesweeper.smart_home_management.utils.FinalString;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
-public class MissionAdd extends AppCompatActivity{
-    private Spinner spinner;
-    private Mission mission;
+public class editMisssionActivity extends AppCompatActivity {
+    private Spinner spinner,spinnertStatus;
     //DB connection
     private FirebaseDatabase db = FirebaseDatabase.getInstance();
-    private DatabaseReference userDB = db.getReference("subscribers");
     private DatabaseReference missionDB = db.getReference("mission");
 
     //field editText-date
@@ -46,49 +40,43 @@ public class MissionAdd extends AppCompatActivity{
     private final Calendar mcalendar=Calendar.getInstance();
 
     //data for dropdown
-    private   List<String> userName=new ArrayList();
-    private  List<String> ids=new ArrayList();
+    private List<Mission> missionUser=new ArrayList();
+    private List<String> missionName=new ArrayList();
+    private List<Status> statusList=new ArrayList();
+    private Mission mission=new Mission();
+    //
+    private String currentNameMission;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mission_add);
-        mission=new Mission();
-
-        //add user name to list by group id and init id of user for dropdown
+        setContentView(R.layout.activity_edit_misssion);
         SharedPreferences prefs = getSharedPreferences(getString(R.string.preference_file_key), MODE_MULTI_PROCESS);
-        String users= prefs.getString(FinalString.USERS, "null");
-        String[] usersId= users.split("#");
-
-        String groupId= prefs.getString(FinalString.GROUP_ID, "null");
+        String userId= prefs.getString(FinalString.USER_ID, "null");
+        statusList.add(Status.NEW);
+        statusList.add(Status.IN_PROGRESS);
+        statusList.add(Status.FINISH);
 
         ArrayAdapter<String> adapter =new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item,userName);
+                android.R.layout.simple_spinner_item,missionName);
         ValueEventListener eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                    String name = ds.child("name").getValue(String.class);
-                    String id = ds.child("phoneNumber").getValue(String.class);
-                    String status= ds.child("status").getValue(String.class);
-                    // user in the group
-                    if(!status.equals("NONE")&&!status.equals("REQUEST_SENT") && ArrayUtils.contains( usersId, id )){
-                        userName.add(name);
-                        ids.add(id);
-                    }
-                    //admin
-                    if(id.equals(groupId) ){
-                        userName.add(name);
-                        ids.add(id);
-                    }
+                DataSnapshot missions= dataSnapshot.child(userId);
+                missionUser.clear();
+                missionName.clear();
+                for(DataSnapshot oneMission : missions.getChildren()) {
+                    Mission missionOfUser=oneMission.getValue(Mission.class);
+                    missionUser.add(missionOfUser);
+                    missionName.add(missionOfUser.getName());
                 }
                 //refresh the drop down
-               adapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         };
-        userDB.addListenerForSingleValueEvent(eventListener);
+        missionDB.addListenerForSingleValueEvent(eventListener);
 
         //text field
         EditText editName = (EditText) findViewById(R.id.field_name_mission_edit);
@@ -101,13 +89,33 @@ public class MissionAdd extends AppCompatActivity{
         year=mcalendar.get(Calendar.YEAR);
         month=mcalendar.get(Calendar.MONTH);
 
+        // spinner mission
+        spinnertStatus=(Spinner)findViewById(R.id.field_status_mission);
 
-        // button submit
+        // spinner mission
+        spinnertStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mission.setStatus(statusList.get(position));
+            }
+            @Override
+            public void onNothingSelected(AdapterView <?> parent) {
+            }
+        });
+        ArrayAdapter<Status> adapterStatus =new ArrayAdapter<Status>(this,
+                android.R.layout.simple_list_item_1,statusList);
+
+        adapterStatus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnertStatus.setAdapter(adapterStatus);
+
+
+        // button submit validate field
         final Button button = findViewById(R.id.button_field_submit);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                mission.setIdPerson(Integer.parseInt(userId));
+
                 String name=String.valueOf(editName.getText());
-                // check input
                 if (name.length() !=0) {
                     mission.setName(name);
                 }
@@ -125,19 +133,22 @@ public class MissionAdd extends AppCompatActivity{
                 }
                 try {
                     mission.setDueDate(String.valueOf(editDueDate.getText()));
-                    mission.setStatus(Status.NEW);
                 }
                 catch (Exception e){
                     Toast.makeText(getApplicationContext(),"Invalid Date", Toast.LENGTH_LONG).show();
 
                 }
-                // add mission to db IdPerson/name_mission/mission
+                if(!currentNameMission.equals(mission.getName())){
+                    missionDB.child(mission.getIdPerson()+"").child(currentNameMission).removeValue();
+
+                }
+                // update mission to db IdPerson/name_mission/mission
                 missionDB.child(mission.getIdPerson()+"").child(mission.getName()).setValue(mission);
             }
         });
 
 
-        //spinner-dropdown
+        //spinner-dropdown name mission
         spinner = (Spinner) findViewById(R.id.field_assign_mission);
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -145,16 +156,33 @@ public class MissionAdd extends AppCompatActivity{
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mission.setIdPerson(Integer.parseInt(ids.get(position)));
+                Mission missionSlected= missionUser.get(position);
+                currentNameMission=missionSlected.getName();
+                editName.setText(missionSlected.getName());
+                editDescription.setText(missionSlected.getDescription());
+                editDueDate.setText(missionSlected.getDueDate());
+                int index=0;
+                if(missionSlected.getStatus() == Status.NEW){
+                    index=0;
+                }
+                else if(missionSlected.getStatus() == Status.IN_PROGRESS){
+                    index=1;
+                }
+                else if(missionSlected.getStatus() ==Status.FINISH) {
+                    index=2;
+                }
+                spinnertStatus.setSelection(index);
+
             }
             @Override
             public void onNothingSelected(AdapterView <?> parent) {
             }
         });
 
+
     }
 
-
+    //  date code
     View.OnClickListener mClickListener=new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -171,8 +199,5 @@ public class MissionAdd extends AppCompatActivity{
         DatePickerDialog dpDialog=new DatePickerDialog(this, listener, year, month, day);
         dpDialog.show();
     }
-
-
-
 
 }
