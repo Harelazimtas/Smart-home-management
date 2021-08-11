@@ -19,7 +19,7 @@ public class StartAlarm extends BroadcastReceiver
     {
         if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED))
         {
-            alarm.setAlarm(context);
+            alarm.setAlarm(context,intent);
         }
     }
 }

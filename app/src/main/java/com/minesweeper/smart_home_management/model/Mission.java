@@ -1,19 +1,17 @@
 package com.minesweeper.smart_home_management.model;
 
-import java.util.Date;
-
 public class Mission {
     private String name;
     private String description;
     private int idPerson;
-    private Date dueDate;
+    private String dueDate;
     private Status status;
 
     public Mission(){
 
     }
 
-    public Mission(String name,String description,int idPerson,Date dueDate){
+    public Mission(String name,String description,int idPerson,String dueDate){
         this.name=name;
         this.description=description;
         this.idPerson=idPerson;
@@ -21,7 +19,7 @@ public class Mission {
         this.status= Status.NEW;
     }
 
-    public Mission(String name,String description,int idPerson,Date dueDate,Status status){
+    public Mission(String name,String description,int idPerson,String dueDate,Status status){
         this.name=name;
         this.description=description;
         this.idPerson=idPerson;
@@ -30,7 +28,7 @@ public class Mission {
     }
 
 
-    public Date getDueDate() {
+    public String getDueDate() {
         return dueDate;
     }
 
@@ -58,7 +56,7 @@ public class Mission {
         this.idPerson = idPerson;
     }
 
-    public void setDueDate(Date dueDate) {
+    public void setDueDate(String dueDate) {
         this.dueDate = dueDate;
     }
 
