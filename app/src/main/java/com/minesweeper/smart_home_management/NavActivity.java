@@ -62,12 +62,7 @@ public class NavActivity extends AppCompatActivity {
         //get date of next mission
         getNearMissionDate(userID);
 
-        //service alarm need to be after login
-       /* serviceIntent = new Intent(this, AlarmService.class);
-        serviceIntent.putExtra("userID", userID);
-        System.out.println("nameNextMission "+ name);
-        serviceIntent.putExtra("nameNextMission", name);
-        startService(serviceIntent);*/
+
     }
 
     private  void openAddMissionScreen(){
