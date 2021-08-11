@@ -33,9 +33,9 @@ public class LoginActivity extends AppCompatActivity {
     private EditText login_txt;
 
     private String userPhoneNumber = "";
+
     private String nameFromDB;
-    private String adminPhone;
-    private  Group group;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -134,25 +134,20 @@ public class LoginActivity extends AppCompatActivity {
                     switch(status)
                     {
                         case "NONE":
+                        case "REQUEST_SENT":
                             Intent intent = new Intent(getApplicationContext(), NoneUserAfterLoginActivity.class);
                             intent.putExtra("phoneNumber",typedPhone());
                             startActivity(intent);
                             Log.d("check", "CreatingNewGroupActivity");
                             break;
                         case "ADMIN":
+                        case "MEMBER":
                             Intent intentAdmin = new Intent(getApplicationContext(), NavActivity.class);
                             intentAdmin.putExtra("phoneNumber",typedPhone());
                             commitUserToPref();
                             startActivity(intentAdmin);
-                            Toast.makeText(getApplicationContext(), "Admin", Toast.LENGTH_LONG).show();
                             break;
-                        case "MEMBER":
-                            Intent intentMember = new Intent(getApplicationContext(), NavActivity.class);
-                            intentMember.putExtra("phoneNumber",typedPhone());
-                            commitUserToPref();
-                            startActivity(intentMember);
-                            Toast.makeText(getApplicationContext(), "Member", Toast.LENGTH_LONG).show();
-                            break;
+
 
                     }
                     return;
