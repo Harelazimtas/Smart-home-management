@@ -35,6 +35,8 @@ public class NavActivity extends AppCompatActivity {
     private  String nameNextMission;
     private static String lastDate="";
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +47,13 @@ public class NavActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 openAddMissionScreen();
+            }
+        });
+        Button editMission = findViewById(R.id.button_nav_edit_mission);
+        editMission.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openEditMissionScreen();
             }
         });
         //my mission add here code open screen
@@ -62,12 +71,7 @@ public class NavActivity extends AppCompatActivity {
         //get date of next mission
         getNearMissionDate(userID);
 
-        //service alarm need to be after login
-       /* serviceIntent = new Intent(this, AlarmService.class);
-        serviceIntent.putExtra("userID", userID);
-        System.out.println("nameNextMission "+ name);
-        serviceIntent.putExtra("nameNextMission", name);
-        startService(serviceIntent);*/
+
     }
 
     private  void openAddMissionScreen(){
@@ -77,6 +81,11 @@ public class NavActivity extends AppCompatActivity {
 
     private  void openAddPeopleScreen(){
         Intent intent=new Intent(this,MissionAdd.class);
+        startActivity(intent);
+    }
+
+    private  void openEditMissionScreen(){
+        Intent intent=new Intent(this,editMisssionActivity.class);
         startActivity(intent);
     }
 
@@ -106,7 +115,6 @@ public class NavActivity extends AppCompatActivity {
                         commitGroupToPref(group.getAdminPhone());
                         commitUsersToPref(users);
                         buttonAddPeople.setVisibility(View.VISIBLE);
-
                         return;
                     }
                     if(userFind){
@@ -168,17 +176,12 @@ public class NavActivity extends AppCompatActivity {
                     System.out.println("nameNextMission "+ nameNextMission);
                     serviceIntent.putExtra("nameNextMission", nameNextMission);
                     startService(serviceIntent);
-
                 }
-
-
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         };
         missionDB.addListenerForSingleValueEvent(eventListener);
-
-
         return nameNextMission;
     }
 

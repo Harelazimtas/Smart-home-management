@@ -90,37 +90,6 @@ public class CreateNewGroupActivity extends AppCompatActivity {
 
     }
 
-
-
-
-    private void getGroupFromDBAdmin(String adminPhone)
-    {
-
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("group").child(adminPhone);
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                if (snapshot.exists()) {
-                    group = snapshot.getValue(Group.class);
-
-
-                }
-            }
-
-
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-
-    }
-
-
-
     public static void updateMemberStatusInDB(String phone, Person.GROUP_STATUS member)
     {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("subscribers").child(phone).child("status");
