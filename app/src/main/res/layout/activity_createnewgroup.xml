@@ -17,17 +17,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.881" />
 
-    <TextView
-        android:id="@+id/member_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Member:"
-        app:layout_constraintBottom_toTopOf="@+id/create_group_btn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.117"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.276" />
 
     <EditText
         android:id="@+id/member_phone_txt"
@@ -35,10 +24,11 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="phone"
+        android:hint="Add new member"
         app:layout_constraintBottom_toTopOf="@+id/create_group_btn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.791"
+        app:layout_constraintHorizontal_bias="0.378"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.271" />
+        app:layout_constraintVertical_bias="0.265" />
 </androidx.constraintlayout.widget.ConstraintLayout>

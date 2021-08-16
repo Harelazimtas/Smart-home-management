@@ -18,4 +18,5 @@ public class TestActivity  extends AppCompatActivity {
         LoggedInUserFromDB = intent.getStringExtra("name");
         loggedInUser = findViewById(R.id.nameFromDB);
     }
+
 }

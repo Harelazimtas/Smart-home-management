@@ -4,38 +4,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Group {
-    private String groupHeader;
-    private String groupAdminPhone;
+    private String groupHeader = "";
+    private String adminPhone = "";
     private List<String> groupMembers;
 
 
     public Group()
     {
 
-        groupMembers = new ArrayList<String>();
+        groupMembers = new ArrayList<>();
     }
 
 
     public Group(String adminPhone)
     {
-        this.groupAdminPhone = adminPhone;
-        groupMembers = new ArrayList<String>();
+        this.adminPhone = adminPhone;
+        groupMembers = new ArrayList<>();
     }
 
-    public String getGroupId() {
+    public String getGroupHeader() {
         return groupHeader;
     }
 
-    public void setGroupId(String groupSubject) {
+    public void setGroupHeader(String groupSubject) {
         this.groupHeader = groupSubject;
     }
 
     public String getAdminPhone() {
-        return groupAdminPhone;
+        return adminPhone;
     }
 
     public void setAdminPhone(String adminPhone) {
-        this.groupAdminPhone = adminPhone;
+        this.adminPhone = adminPhone;
     }
 
     public List<String> getGroupMembers() {
@@ -65,5 +65,12 @@ public class Group {
         }
 
         return false;
+    }
+
+    public String toString()
+    {
+        return "admin phone: " + getAdminPhone() + "\n" +
+                "members: " + getGroupMembers();
+
     }
 }
