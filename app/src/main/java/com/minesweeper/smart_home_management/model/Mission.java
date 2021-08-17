@@ -3,7 +3,7 @@ package com.minesweeper.smart_home_management.model;
 public class Mission {
     private String name;
     private String description;
-    private int idPerson;
+    private String idPerson;
     private String dueDate;
     private Status status;
 
@@ -11,7 +11,7 @@ public class Mission {
 
     }
 
-    public Mission(String name,String description,int idPerson,String dueDate){
+    public Mission(String name,String description,String idPerson,String dueDate){
         this.name=name;
         this.description=description;
         this.idPerson=idPerson;
@@ -19,7 +19,7 @@ public class Mission {
         this.status= Status.NEW;
     }
 
-    public Mission(String name,String description,int idPerson,String dueDate,Status status){
+    public Mission(String name,String description,String idPerson,String dueDate,Status status){
         this.name=name;
         this.description=description;
         this.idPerson=idPerson;
@@ -32,7 +32,7 @@ public class Mission {
         return dueDate;
     }
 
-    public int getIdPerson() {
+    public String getIdPerson() {
         return idPerson;
     }
 
@@ -52,7 +52,7 @@ public class Mission {
         this.description = description;
     }
 
-    public void setIdPerson(int idPerson) {
+    public void setIdPerson(String idPerson) {
         this.idPerson = idPerson;
     }
 
