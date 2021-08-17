@@ -32,6 +32,7 @@ public class RequestApproveActivity extends AppCompatActivity {
     Group group;
     String status = "";
     private RecyclerView recyclerView;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_requestgroup);
@@ -193,9 +194,6 @@ public class RequestApproveActivity extends AppCompatActivity {
 
                     }
                 });
-
-
-
             }
 
         }
