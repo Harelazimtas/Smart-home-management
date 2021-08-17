@@ -36,10 +36,10 @@ public class NavActivity extends AppCompatActivity {
     private static String lastDate="";
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_nav);
         final Button buttonAddMission = findViewById(R.id.button_nav_add_mission);
         //add mission
@@ -57,6 +57,13 @@ public class NavActivity extends AppCompatActivity {
             }
         });
         //my mission add here code open screen
+        Button myMission = findViewById(R.id.button_nav_my_mission);
+        myMission.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openMyMissionScreen();
+            }
+        });
 
     }
 
@@ -76,6 +83,11 @@ public class NavActivity extends AppCompatActivity {
 
     private  void openAddMissionScreen(){
         Intent intent=new Intent(this,MissionAdd.class);
+        startActivity(intent);
+    }
+
+    private  void openMyMissionScreen(){
+        Intent intent=new Intent(this,MissionActivity.class);
         startActivity(intent);
     }
 
@@ -172,9 +184,8 @@ public class NavActivity extends AppCompatActivity {
 
                 if(lastDate != ""&&new Date(tommrowDate).after(new Date(lastDate))){
                     //service alarm need to be after login
-                    serviceIntent.putExtra("userID", userId);
-                    System.out.println("nameNextMission "+ nameNextMission);
                     serviceIntent.putExtra("nameNextMission", nameNextMission);
+                    serviceIntent.putExtra("userID", userId);
                     startService(serviceIntent);
                 }
             }

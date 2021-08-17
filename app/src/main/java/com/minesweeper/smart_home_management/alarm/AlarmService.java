@@ -38,9 +38,6 @@ public class AlarmService extends Service {
     public void onStart(Intent intent, int startId)
     {
         Bundle extras = intent.getExtras();
-        if(extras.get("userID").toString()!= null){
-            alarm=new Alarm(extras.get("userId").toString());
-        }
         alarm.setAlarm(this,intent);
     }
 
