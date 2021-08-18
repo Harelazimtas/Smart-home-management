@@ -1,11 +1,11 @@
 package com.minesweeper.smart_home_management;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -19,10 +19,9 @@ import com.minesweeper.smart_home_management.model.Group;
 import com.minesweeper.smart_home_management.model.Mission;
 import com.minesweeper.smart_home_management.utils.FinalString;
 
-import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 
 public class NavActivity extends AppCompatActivity {
 
@@ -34,6 +33,8 @@ public class NavActivity extends AppCompatActivity {
     private Button buttonAddPeople;
     private  String nameNextMission;
     private static String lastDate="";
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +48,21 @@ public class NavActivity extends AppCompatActivity {
                 openAddMissionScreen();
             }
         });
+        Button editMission = findViewById(R.id.button_nav_edit_mission);
+        editMission.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openEditMissionScreen();
+            }
+        });
         //my mission add here code open screen
+        buttonAddPeople = findViewById(R.id.button_nav_add_people);
+        buttonAddPeople.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openAddnewMemberScreen();
+            }
+        });
 
     }
 
@@ -62,12 +77,7 @@ public class NavActivity extends AppCompatActivity {
         //get date of next mission
         getNearMissionDate(userID);
 
-        //service alarm need to be after login
-       /* serviceIntent = new Intent(this, AlarmService.class);
-        serviceIntent.putExtra("userID", userID);
-        System.out.println("nameNextMission "+ name);
-        serviceIntent.putExtra("nameNextMission", name);
-        startService(serviceIntent);*/
+
     }
 
     private  void openAddMissionScreen(){
@@ -77,6 +87,16 @@ public class NavActivity extends AppCompatActivity {
 
     private  void openAddPeopleScreen(){
         Intent intent=new Intent(this,MissionAdd.class);
+        startActivity(intent);
+    }
+
+    private  void openEditMissionScreen(){
+        Intent intent=new Intent(this,editMisssionActivity.class);
+        startActivity(intent);
+    }
+
+    private  void openAddnewMemberScreen(){
+        Intent intent=new Intent(this, AdminAddMembersActivity.class);
         startActivity(intent);
     }
 
@@ -106,7 +126,6 @@ public class NavActivity extends AppCompatActivity {
                         commitGroupToPref(group.getAdminPhone());
                         commitUsersToPref(users);
                         buttonAddPeople.setVisibility(View.VISIBLE);
-
                         return;
                     }
                     if(userFind){
@@ -168,19 +187,35 @@ public class NavActivity extends AppCompatActivity {
                     System.out.println("nameNextMission "+ nameNextMission);
                     serviceIntent.putExtra("nameNextMission", nameNextMission);
                     startService(serviceIntent);
-
                 }
-
-
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         };
         missionDB.addListenerForSingleValueEvent(eventListener);
-
-
         return nameNextMission;
     }
 
 
+    private void getGroupByAdmin()
+    {
+        SharedPreferences prefs = getSharedPreferences(getString(R.string.preference_file_key), MODE_MULTI_PROCESS);
+        String userID = prefs.getString(FinalString.USER_ID, "null");
+        List<String> groupMembers = new ArrayList<>();
+        groupDB.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists())
+                {
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
 }

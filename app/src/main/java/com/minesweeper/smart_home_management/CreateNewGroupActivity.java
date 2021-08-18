@@ -37,6 +37,8 @@ public class CreateNewGroupActivity extends AppCompatActivity {
     String addedMember = "";
     private FirebaseDatabase db = FirebaseDatabase.getInstance();
     private DatabaseReference root = db.getReference("group");
+
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_createnewgroup);
@@ -50,7 +52,37 @@ public class CreateNewGroupActivity extends AppCompatActivity {
       approveNewGroup.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
-            createNewGroupInDB(userPhone);
+
+
+              if(!addedMemberPhone.getText().toString().equals("") || status.equals(""))
+              {
+                  getMemberStatusFromDB(addedMemberPhone.getText().toString(), new StatusCallback() {
+                      @Override
+                      public void getStatusDB(String str) {
+                         if(status.equals("NONE") || status.equals("") || status.equals("REQUEST_SENT"))
+                                isUserValid();
+                         else
+                             {
+                                 addedMemberPhone.setError("This user is in another group");
+                                 addedMemberPhone.requestFocus();
+                             }
+                      }
+
+                      @Override
+                      public void noStatus(String str) {
+                          addedMemberPhone.setError(str);
+                          addedMemberPhone.requestFocus();
+                      }
+                  });
+
+
+
+              }
+              else
+              {
+                  addedMemberPhone.setError("Added user cannot be empty");
+                  addedMemberPhone.requestFocus();
+              }
 
           }
       });
@@ -65,7 +97,7 @@ public class CreateNewGroupActivity extends AppCompatActivity {
         String groupHeader = "";
         String addedMemberStatus = addedMemberPhone.getText().toString();
       //  getGroupFromDBAdmin(adminPhone);
-       if((group == null) && (status.equals("") || status.equals("NONE")))
+       if((group == null) && (status.equals("") || status.equals("NONE") || status.equals("REQUEST_SENT")))
        {
 
            group = new Group(adminPhone);
@@ -75,6 +107,10 @@ public class CreateNewGroupActivity extends AppCompatActivity {
 
            updateMemberStatusInDB(adminPhone, Person.GROUP_STATUS.ADMIN);
            updateMemberStatusInDB(addedMemberStatus, Person.GROUP_STATUS.REQUEST_SENT);
+           Intent intent = new Intent(getApplicationContext(), NavActivity.class);
+           intent.putExtra("phoneNumber",userPhone);
+           startActivity(intent);
+           finish();
 
        }
        else
@@ -93,31 +129,6 @@ public class CreateNewGroupActivity extends AppCompatActivity {
 
 
 
-    private void getGroupFromDBAdmin(String adminPhone)
-    {
-
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("group").child(adminPhone);
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                if (snapshot.exists()) {
-                    group = snapshot.getValue(Group.class);
-
-
-                }
-            }
-
-
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-
-    }
 
 
 
@@ -155,13 +166,46 @@ public class CreateNewGroupActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                callback.noStatus("Give me 100 on this project please!!");
+                callback.noStatus("NO STATUS WAS FOUND");
             }
         });
 
     }
     public void onClick(View v) {
         addedMemberPhone.getText().clear();
+    }
+
+
+    private void isUserValid()
+    {
+        String addedMember = addedMemberPhone.getText().toString();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("subscribers");
+        reference.child(addedMember).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists())
+                {
+                    if(addedMember.equals(userPhone))
+                    {
+                        addedMemberPhone.setError("You cannot create a group with yourself!");
+                        addedMemberPhone.requestFocus();
+                        return;
+                    }
+
+                    createNewGroupInDB(userPhone);
+                    return;
+
+                }
+                addedMemberPhone.setError("Added user was not found");
+                addedMemberPhone.requestFocus();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 
 
