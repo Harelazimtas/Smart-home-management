@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.common.util.ArrayUtils;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -19,7 +20,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.minesweeper.smart_home_management.model.Group;
 import com.minesweeper.smart_home_management.model.Person;
+import com.minesweeper.smart_home_management.model.Status;
 import com.minesweeper.smart_home_management.utils.FinalString;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AdminAddMembersActivity extends AppCompatActivity {
 
@@ -27,7 +32,7 @@ public class AdminAddMembersActivity extends AppCompatActivity {
     private DatabaseReference rootGroup = db.getReference("group");
     private DatabaseReference rootSub = db.getReference("subscribers");
     private EditText newMemberInGroup;
-    private Button addButton;
+    private Button addButton,deleteButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +45,48 @@ public class AdminAddMembersActivity extends AppCompatActivity {
                 checkMemberStatus();
             }
         });
+
+        deleteButton =findViewById(R.id.cancel_btn);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteMember();
+            }
+        });
+
+
+    }
+
+    public void  deleteMember(){
+        String userId= String.valueOf(newMemberInGroup.getText());
+        SharedPreferences prefs = getSharedPreferences(getString(R.string.preference_file_key), MODE_MULTI_PROCESS);
+        String adminID = prefs.getString(FinalString.USER_ID, "null");
+        ValueEventListener eventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                Group groupAdmin=dataSnapshot.child(adminID).getValue(Group.class);
+                List<String> memberIds=groupAdmin.getGroupMembers();
+                memberIds.remove(userId);
+                groupAdmin.setGroupMembers(memberIds);
+                rootGroup.child(adminID).setValue(groupAdmin);
+                Person.GROUP_STATUS status = Person.GROUP_STATUS.NONE;
+                for (DataSnapshot group:dataSnapshot.getChildren()) {
+                    List<String> userGroup =group.getValue(Group.class).getGroupMembers();
+                    if(userGroup.contains(userId)){
+                        status= Person.GROUP_STATUS.REQUEST_SENT;
+                        rootSub.child(userId).child("status").setValue(status);
+                        return;
+                    }
+
+                }
+                rootSub.child(userId).child("status").setValue(status);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        };
+        rootGroup.addListenerForSingleValueEvent(eventListener);
+
 
 
     }
