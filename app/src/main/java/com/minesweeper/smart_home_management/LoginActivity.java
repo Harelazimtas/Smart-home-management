@@ -136,6 +136,7 @@ public class LoginActivity extends AppCompatActivity {
                         case "NONE":
                         case "REQUEST_SENT":
                             Intent intent = new Intent(getApplicationContext(), NoneUserAfterLoginActivity.class);
+                            commitUserToPref();
                             intent.putExtra("phoneNumber",typedPhone());
                             startActivity(intent);
                             Log.d("check", "CreatingNewGroupActivity");

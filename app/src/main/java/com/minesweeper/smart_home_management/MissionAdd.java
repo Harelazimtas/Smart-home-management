@@ -78,7 +78,7 @@ public class MissionAdd extends AppCompatActivity{
                         ids.add(id);
                     }
                     //admin
-                    if(id.equals(groupId) ){
+                    if(id != null&&id.equals(groupId) ){
                         userName.add(name);
                         ids.add(id);
                     }
