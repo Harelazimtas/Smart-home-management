@@ -45,4 +45,8 @@ public class Group {
                 "members: " + getGroupMembers();
 
     }
+
+    public void setGroupMembers(List<String> memberIds) {
+        this.groupMembers =memberIds;
+    }
 }
