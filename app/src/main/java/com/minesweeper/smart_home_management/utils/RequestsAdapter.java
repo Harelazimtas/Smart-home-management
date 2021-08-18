@@ -36,13 +36,28 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.MyView
     {
         private TextView nameText;
         private Button approve_btn;
+        private Button cancel_btn;
 
         public MyViewHolder(final View view)
         {
             super(view);
             nameText = view.findViewById(R.id.textView3);
             approve_btn = view.findViewById(R.id.approve_group_btn);
+            cancel_btn = view.findViewById(R.id.cancel_group_btn);
             approve_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (mClickListener != null) {
+                        mClickListener.onItemClick(v, getBindingAdapterPosition());
+
+
+                    }
+
+                }
+            });
+
+            cancel_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 

@@ -78,6 +78,13 @@ public class NavActivity extends AppCompatActivity {
         //get date of next mission
         getNearMissionDate(userID);
 
+        buttonAddPeople.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openAddnewMemberScreen();
+            }
+        });
+
 
     }
 
@@ -86,7 +93,12 @@ public class NavActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private  void openMyMissionScreen(){
+    private  void openAddnewMemberScreen() {
+        Intent intent = new Intent(this, AdminAddMembersActivity.class);
+        startActivity(intent);
+    }
+
+        private  void openMyMissionScreen(){
         Intent intent=new Intent(this,MissionActivity.class);
         startActivity(intent);
     }

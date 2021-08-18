@@ -148,7 +148,16 @@ public class RequestApproveActivity extends AppCompatActivity {
         adapter_requests.setClickListener(new RequestsAdapter.ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                approveRequests(arrGroups.get(position));
+               if(view.getId() == R.id.approve_group_btn)
+               {
+                   approveRequests(arrGroups.get(position));
+                   Intent intent = new Intent(getApplicationContext(), NavActivity.class);
+                   intent.putExtra("phoneNumber",LoggedInUserFromDB);
+                   startActivity(intent);
+                   finish();
+               }
+                else
+                    cancelGroupRequest(arrGroups.get(position));
             }
 
         });
@@ -198,6 +207,36 @@ public class RequestApproveActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    private void cancelGroupRequest(String adminPhone)
+    {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("group");
+
+        reference.child(adminPhone).child("groupMembers").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists())
+                {
+                    List<String> groupMembers = new ArrayList<>();
+                    groupMembers.add("");
+                    for (DataSnapshot snap: snapshot.getChildren()) {
+                        if(!snap.getValue().equals(LoggedInUserFromDB))
+                        {
+                            groupMembers.add(snap.getValue(String.class));
+                        }
+                    }
+                    reference.child(adminPhone).child("groupMembers").setValue(groupMembers);
+                    finish();
+                    startActivity(getIntent());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
 

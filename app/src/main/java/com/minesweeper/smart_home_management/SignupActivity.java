@@ -1,15 +1,21 @@
 package com.minesweeper.smart_home_management;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import com.google.firebase.database.ValueEventListener;
 import com.minesweeper.smart_home_management.model.Person;
 
 public class SignupActivity extends AppCompatActivity {
@@ -37,6 +43,8 @@ public class SignupActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+                isPhoneInTheDB();
+               /*
                 String name;
                 String phone_Number;
                 name = firstName.getText().toString() + " " + lastName.getText().toString();
@@ -44,6 +52,11 @@ public class SignupActivity extends AppCompatActivity {
                 person = new Person(name,  phone_Number);
 
                 root.child(person.getPhoneNumber()).setValue(person);
+                Intent intent = new Intent(getApplicationContext(), NoneUserAfterLoginActivity.class);
+                intent.putExtra("phoneNumber",phoneNumber.getText());
+                startActivity(intent);
+
+                */
 
 
             }
@@ -57,6 +70,75 @@ public class SignupActivity extends AppCompatActivity {
             lastName.getText().clear();
         else
         phoneNumber.getText().clear();
+    }
+
+    private void isPhoneInTheDB()
+    {
+        String subPhone = phoneNumber.getText().toString();
+
+
+        root.child(subPhone).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(!snapshot.exists() && (!(phoneNumber.getText().toString().equals(""))  || !(phoneNumber.getText().toString().equals("Phone number"))))
+                {
+                    String name;
+                    String phone_Number;
+                    name = firstName.getText().toString() + " " + lastName.getText().toString();
+                    phone_Number = phoneNumber.getText().toString();
+                    person = new Person(name,  phone_Number);
+
+                    root.child(person.getPhoneNumber()).setValue(person);
+                    Intent intent = new Intent(getApplicationContext(), NoneUserAfterLoginActivity.class);
+                    intent.putExtra("phoneNumber", phone_Number);
+                    startActivity(intent);
+                    finish();
+                    return;
+
+
+                }
+
+                if(phoneNumber.getText().toString().equals(""))
+                {
+                    phoneNumber.setError("This field cannot be empty");
+                    phoneNumber.requestFocus();
+                    return;
+
+                }
+                else if(phoneNumber.getText().toString().equals("Phone number"))
+                {
+                    phoneNumber.setError("Please type any phone number");
+                    phoneNumber.requestFocus();
+                    return;
+
+                }
+                else if(firstName.getText().toString().equals(""))
+                {
+                    firstName.setError("This field cannot be empty");
+                    firstName.requestFocus();
+                    return;
+                }
+                else if(lastName.getText().toString().equals(""))
+                {
+                    lastName.setError("This field cannot be empty");
+                    lastName.requestFocus();
+                    return;
+                }
+
+                else
+                    {
+                        phoneNumber.setError("This user is already a subscriber");
+                        phoneNumber.requestFocus();
+                        return;
+
+                    }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
 }
