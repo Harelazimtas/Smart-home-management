@@ -44,20 +44,6 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 isPhoneInTheDB();
-               /*
-                String name;
-                String phone_Number;
-                name = firstName.getText().toString() + " " + lastName.getText().toString();
-                phone_Number = phoneNumber.getText().toString();
-                person = new Person(name,  phone_Number);
-
-                root.child(person.getPhoneNumber()).setValue(person);
-                Intent intent = new Intent(getApplicationContext(), NoneUserAfterLoginActivity.class);
-                intent.putExtra("phoneNumber",phoneNumber.getText());
-                startActivity(intent);
-
-                */
-
 
             }
         });

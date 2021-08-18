@@ -94,51 +94,6 @@ public class RequestApproveActivity extends AppCompatActivity {
     }
 
 
-    private void getGroupFromDBMember(String phoneFromUser, GroupCallback callback)
-    {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("group");
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                boolean isMemberFound = false;
-                for (DataSnapshot snap:snapshot.getChildren()){
-
-                    group = snap.getValue(Group.class);
-
-                    for(DataSnapshot innerSnap :snap.child("groupMembers").getChildren())
-                    {
-                        Log.d("123", innerSnap.getValue(String.class));
-
-                        if(innerSnap.getValue(String.class).equals(phoneFromUser))
-                        {
-                            isMemberFound = true;
-
-
-                        }
-
-                    }
-
-                    if(isMemberFound)
-                    {
-                        callback.getGroupDB("group was found");
-                        return;
-                    }
-
-
-                }
-                callback.noGroup("No group was found");
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-    }
-
-
-
 
     private void showAllRequests() {
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
