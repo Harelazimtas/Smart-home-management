@@ -39,7 +39,7 @@
         android:layout_marginTop="276dp"
         android:ems="10"
         android:inputType="phone"
-        android:text="Phone number"
+        android:hint="Phone number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"

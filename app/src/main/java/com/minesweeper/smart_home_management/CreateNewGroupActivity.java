@@ -24,6 +24,7 @@ import com.minesweeper.smart_home_management.model.Group;
 import com.minesweeper.smart_home_management.model.GroupCallback;
 import com.minesweeper.smart_home_management.model.StatusCallback;
 import com.minesweeper.smart_home_management.model.Person;
+import com.minesweeper.smart_home_management.utils.FinalString;
 
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
@@ -53,8 +54,8 @@ public class CreateNewGroupActivity extends AppCompatActivity {
           @Override
           public void onClick(View v) {
 
-
               if(!addedMemberPhone.getText().toString().equals(""))
+
               {
                   getMemberStatusFromDB(addedMemberPhone.getText().toString(), new StatusCallback() {
                       @Override
@@ -99,11 +100,14 @@ public class CreateNewGroupActivity extends AppCompatActivity {
 
        if((group == null) && (status.equals("") || status.equals("NONE") || status.equals("REQUEST_SENT")))
        {
-
            group = new Group(adminPhone);
            group.addPersonToGroup(addedMemberStatus);
-
            root.child(group.getAdminPhone()).setValue(group);
+
+           SharedPreferences prefs = getSharedPreferences(getString(R.string.preference_file_key), MODE_MULTI_PROCESS);
+           SharedPreferences.Editor editor = prefs.edit();
+           editor.putString(FinalString.USER_ID,adminPhone);
+           editor.commit();
 
            updateMemberStatusInDB(adminPhone, Person.GROUP_STATUS.ADMIN);
            updateMemberStatusInDB(addedMemberStatus, Person.GROUP_STATUS.REQUEST_SENT);
