@@ -27,15 +27,8 @@ import java.util.Date;
 
 public class Alarm extends BroadcastReceiver
 {
-    //we can store user id in preference and get them
-
    // private static String userID;
     private final int SHOW_MESSAGE_PER_MINUTE= 1;
-
-    public Alarm(String userID){
-        //this.userID=userID;
-
-    }
 
     public Alarm(){
 
@@ -60,7 +53,7 @@ public class Alarm extends BroadcastReceiver
 
         Intent i = new Intent(context, Alarm.class);
         Bundle extras = intent.getExtras();
-        if(extras.get("userID").toString() != null ){
+        if(extras.get("nameNextMission")!= null &&extras.get("userID").toString() != null ){
             i.putExtra("userID", extras.get("userID").toString());
             i.putExtra("nameNextMission", extras.get("nameNextMission").toString());
         }

@@ -50,6 +50,7 @@ public class editMisssionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_edit_misssion);
         SharedPreferences prefs = getSharedPreferences(getString(R.string.preference_file_key), MODE_MULTI_PROCESS);
         String userId= prefs.getString(FinalString.USER_ID, "null");
@@ -114,7 +115,7 @@ public class editMisssionActivity extends AppCompatActivity {
         final Button button = findViewById(R.id.button_field_submit);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                mission.setIdPerson(Integer.parseInt(userId));
+                mission.setIdPerson(userId);
 
                 String name=String.valueOf(editName.getText());
                 if (name.length() !=0) {
@@ -140,7 +141,6 @@ public class editMisssionActivity extends AppCompatActivity {
 
                 }
                 //remove mission if the name change or if the mission finish
-                System.out.println("mission1 "+mission);
                 if(!currentNameMission.equals(mission.getName())){
                     missionDB.child(mission.getIdPerson()+"").child(currentNameMission).removeValue();
                 }

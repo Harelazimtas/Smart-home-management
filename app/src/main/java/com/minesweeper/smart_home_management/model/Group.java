@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Group {
-    private String groupHeader = "";
     private String adminPhone = "";
     private List<String> groupMembers;
 
@@ -20,14 +19,6 @@ public class Group {
     {
         this.adminPhone = adminPhone;
         groupMembers = new ArrayList<>();
-    }
-
-    public String getGroupHeader() {
-        return groupHeader;
-    }
-
-    public void setGroupHeader(String groupSubject) {
-        this.groupHeader = groupSubject;
     }
 
     public String getAdminPhone() {

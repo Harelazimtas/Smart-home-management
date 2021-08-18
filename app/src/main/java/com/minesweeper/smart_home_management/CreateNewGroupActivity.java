@@ -127,11 +127,6 @@ public class CreateNewGroupActivity extends AppCompatActivity {
     }
 
 
-
-
-
-
-
     public static void updateMemberStatusInDB(String phone, Person.GROUP_STATUS member)
     {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("subscribers").child(phone).child("status");
