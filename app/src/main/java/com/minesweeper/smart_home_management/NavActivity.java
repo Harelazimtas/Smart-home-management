@@ -85,8 +85,8 @@ public class NavActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private  void openAddPeopleScreen(){
-        Intent intent=new Intent(this,MissionAdd.class);
+        private  void openAddPeopleScreen(){
+            Intent intent=new Intent(this,MissionAdd.class);
         startActivity(intent);
     }
 
