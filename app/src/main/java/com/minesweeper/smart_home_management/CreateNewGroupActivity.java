@@ -54,7 +54,7 @@ public class CreateNewGroupActivity extends AppCompatActivity {
           public void onClick(View v) {
 
 
-              if(!addedMemberPhone.getText().toString().equals("") || status.equals(""))
+              if(!addedMemberPhone.getText().toString().equals(""))
               {
                   getMemberStatusFromDB(addedMemberPhone.getText().toString(), new StatusCallback() {
                       @Override
@@ -96,7 +96,7 @@ public class CreateNewGroupActivity extends AppCompatActivity {
     {
         String groupHeader = "";
         String addedMemberStatus = addedMemberPhone.getText().toString();
-      //  getGroupFromDBAdmin(adminPhone);
+
        if((group == null) && (status.equals("") || status.equals("NONE") || status.equals("REQUEST_SENT")))
        {
 
@@ -136,7 +136,6 @@ public class CreateNewGroupActivity extends AppCompatActivity {
 
     public void getMemberStatusFromDB(String phone, StatusCallback callback)
     {
-
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("subscribers").child(phone);
         Query ref = reference.orderByChild(phone);
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -154,8 +153,10 @@ public class CreateNewGroupActivity extends AppCompatActivity {
 
                 }
                 else
+                {
                     callback.noStatus("User cannot be found");
-            }
+                    return;
+            }   }
 
 
 

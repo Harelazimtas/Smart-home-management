@@ -25,17 +25,10 @@ public class Group {
         return adminPhone;
     }
 
-    public void setAdminPhone(String adminPhone) {
-        this.adminPhone = adminPhone;
-    }
-
     public List<String> getGroupMembers() {
         return groupMembers;
     }
 
-    public void setGroupMembers(List<String> groupMembers) {
-        this.groupMembers = groupMembers;
-    }
 
     public boolean addPersonToGroup(String p)
     {
@@ -45,18 +38,6 @@ public class Group {
         return true;
     }
 
-    public boolean removePersonFromGroup(String p)
-    {
-        for (String person: groupMembers) {
-            if(p.equals(person))
-            {
-                groupMembers.remove(p);
-                return true;
-            }
-        }
-
-        return false;
-    }
 
     public String toString()
     {
