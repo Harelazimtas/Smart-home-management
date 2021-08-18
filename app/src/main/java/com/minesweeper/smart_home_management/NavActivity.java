@@ -185,13 +185,8 @@ public class NavActivity extends AppCompatActivity {
                         nameNextMission=mission.getName();
                     }
                 }
-                Date dateTomrrowGet=new Date();
-                int day=dateTomrrowGet.getDay()+9;
-                int month = dateTomrrowGet.getMonth()+1;
-                String tommrowDate= month+ "/"+day+"/"+2021;
-
-                if(lastDate != ""&&new Date(tommrowDate).after(new Date(lastDate))){
-                    //service alarm need to be after login
+                if(lastDate != ""&&new Date().after(new Date(lastDate))){
+                    //service alarm need to be after login\
                     serviceIntent.putExtra("nameNextMission", nameNextMission);
                     serviceIntent.putExtra("userID", userId);
                     startService(serviceIntent);
