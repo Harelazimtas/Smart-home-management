@@ -19,9 +19,8 @@
 
 
     <!--nav bar-->
-    <string name="button_nav_my_mission">My Mission</string>
+    <string name="button_nav_my_mission">My Missions</string>
     <string name="button_nav_add_mission">Add Mission</string>
-    <string name="button_nav_all_mission">All Mission</string>
     <string name="button_nav_edit_mission">edit Mission</string>
     <string name="button_nav_add_people">Add/Delete</string>
 

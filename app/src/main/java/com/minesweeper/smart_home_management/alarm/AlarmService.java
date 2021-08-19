@@ -27,9 +27,6 @@ public class AlarmService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId)
     {
-        /*Bundle extras = intent.getExtras();
-        alarm.setUserID(extras.get("userID").toString());
-        */
         alarm.setAlarm(this,intent);
         return START_STICKY;
     }

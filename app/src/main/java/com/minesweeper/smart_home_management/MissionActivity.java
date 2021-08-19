@@ -83,6 +83,7 @@ public class MissionActivity extends AppCompatActivity {
     }
 
     private  void openEditMissionScreen(){
+        finish();
         Intent intent=new Intent(this,editMisssionActivity.class);
         startActivity(intent);
     }

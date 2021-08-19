@@ -134,6 +134,8 @@ public class MissionAdd extends AppCompatActivity{
                 }
                 // add mission to db IdPerson/name_mission/mission
                 missionDB.child(mission.getIdPerson()+"").child(mission.getName()).setValue(mission);
+                Toast.makeText(getApplicationContext(),"Mission Add", Toast.LENGTH_LONG).show();
+
             }
         });
 
