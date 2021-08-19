@@ -37,7 +37,9 @@ public class NoneUserAfterLoginActivity extends AppCompatActivity {
                 LoggedUser = intent.getStringExtra("phoneNumber");
                Intent intentsec = new Intent(getApplicationContext(), CreateNewGroupActivity.class);
                intentsec.putExtra("phoneNumber", LoggedUser);
+               finish();
                 startActivity(intentsec);
+
 
             }
         });
@@ -48,6 +50,7 @@ public class NoneUserAfterLoginActivity extends AppCompatActivity {
                 LoggedUser = intent.getStringExtra("phoneNumber");
                 Intent intentsec = new Intent(getApplicationContext(), RequestApproveActivity.class);
                 intentsec.putExtra("phoneNumber", LoggedUser);
+                finish();
                 startActivity(intentsec);
             }
         });

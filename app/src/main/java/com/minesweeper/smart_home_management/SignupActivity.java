@@ -61,8 +61,10 @@ public class SignupActivity extends AppCompatActivity {
     private void isPhoneInTheDB()
     {
         String subPhone = phoneNumber.getText().toString();
+        String firsNames = firstName.getText().toString();
+        String lastNames = lastName.getText().toString();
 
-
+        if((!lastNames.equals(""))&&(!firsNames.equals("")))
         root.child(subPhone).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -98,33 +100,37 @@ public class SignupActivity extends AppCompatActivity {
                     return;
 
                 }
-                else if(firstName.getText().toString().equals(""))
-                {
-                    firstName.setError("This field cannot be empty");
-                    firstName.requestFocus();
-                    return;
-                }
-                else if(lastName.getText().toString().equals(""))
-                {
-                    lastName.setError("This field cannot be empty");
-                    lastName.requestFocus();
-                    return;
-                }
 
-                else
-                    {
-                        phoneNumber.setError("This user is already a subscriber");
-                        phoneNumber.requestFocus();
-                        return;
-
-                    }
             }
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
+        else{
+            if(firstName.getText().toString().equals(""))
+            {
+                firstName.setError("This field cannot be empty");
+                firstName.requestFocus();
+                return;
+            }
+            else if(lastName.getText().toString().equals(""))
+            {
+                lastName.setError("This field cannot be empty");
+                lastName.requestFocus();
+                return;
+            }
+
+            else
+            {
+                phoneNumber.setError("This user is already a subscriber");
+                phoneNumber.requestFocus();
+                return;
+
+            }
+        }
     }
 
 }

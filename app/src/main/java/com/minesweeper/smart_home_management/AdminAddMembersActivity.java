@@ -121,9 +121,11 @@ public class AdminAddMembersActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences(getString(R.string.preference_file_key), MODE_MULTI_PROCESS);
         String adminPhone = prefs.getString(FinalString.USER_ID, "null");
         Group group = new Group(adminPhone);
-
+        // add user to group
         group.addPersonToGroup(newMemberInGroup.getText().toString());
+        //update status
         CreateNewGroupActivity.updateMemberStatusInDB(newMemberInGroup.getText().toString(), Person.GROUP_STATUS.REQUEST_SENT);
+        // user member in group
         rootGroup.child(adminPhone).child("groupMembers").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot)
@@ -132,11 +134,11 @@ public class AdminAddMembersActivity extends AppCompatActivity {
                 if(snapshot.exists())
                 {
                     boolean isUser = false;
-                    for (DataSnapshot snap: snapshot.getChildren())
-                    {
+                    for (DataSnapshot snap: snapshot.getChildren()) {
                         String phone = snap.getValue(String.class);
-                        if(!phone.equals(newMemberInGroup.getText().toString()))
+                        if (!phone.equals(newMemberInGroup.getText().toString())){
                             group.addPersonToGroup(phone);
+                        }
                         else
                         {
                             isUser = true;
@@ -144,7 +146,7 @@ public class AdminAddMembersActivity extends AppCompatActivity {
 
                     }
                     if(!isUser) {
-                        rootGroup.child(adminPhone).child("groupMembers").setValue(group.getGroupMembers()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        rootGroup.child(adminPhone).setValue(group).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
 
@@ -157,6 +159,11 @@ public class AdminAddMembersActivity extends AppCompatActivity {
                     {
                         Toast.makeText(getApplicationContext(), "Member is already in this group", Toast.LENGTH_SHORT).show();
                     }
+                }
+                else{
+                    rootGroup.child(adminPhone).setValue(group);
+                    Toast.makeText(getApplicationContext(), "Member was added successfully", Toast.LENGTH_SHORT).show();
+
                 }
 
             }

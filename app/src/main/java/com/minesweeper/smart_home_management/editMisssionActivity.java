@@ -149,6 +149,8 @@ public class editMisssionActivity extends AppCompatActivity {
                     return;
                 }
                 // update mission to db IdPerson/name_mission/mission
+                Toast.makeText(getApplicationContext(),"Mission edit success", Toast.LENGTH_LONG).show();
+
                 missionDB.child(mission.getIdPerson()+"").child(mission.getName()).setValue(mission);
             }
         });
